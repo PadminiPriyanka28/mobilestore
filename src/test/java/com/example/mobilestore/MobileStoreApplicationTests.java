@@ -60,7 +60,7 @@ public class MobileStoreApplicationTests {
         Long productId = 1L;
         Product mockProduct = new Product();
         mockProduct.setId(productId);
-        mockProduct.setName("Sample Phone");
+        mockProduct.setName("Sample super Phone");
         when(productService.getProductById(productId)).thenReturn(mockProduct);
 
         // Act
