@@ -2,7 +2,7 @@ package com.example.mobilestore;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
-
+import controller.AuthController;
 import controller.ProductController;
 import controller.UserController;
 import model.Product;
@@ -15,10 +15,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import service.CartService;
 import service.ProductService;
 import service.UserService;
 
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,7 +30,8 @@ public class MobileStoreApplicationTests {
     private UserService userService;
     @Mock
     private PasswordEncoder passwordEncoder;
-
+    @InjectMocks
+    private AuthController authController;
     @Mock
     private ProductService productService;
     @Mock
@@ -87,6 +90,25 @@ public class MobileStoreApplicationTests {
         verify(productService).getAllProducts(); // Ensure the service method is called
     }
 
+
+
+    @Test
+    public void testLogout() {
+        lastTestName = "testLogout"; // Store test case name
+        // Arrange
+        HttpSession mockSession = mock(HttpSession.class); // Mock the HttpSession
+
+        // Act
+        String viewName = AuthController.logout(mockSession, model); // Call the logout function
+        lastTestResult = "logoutSuccess".equals(viewName); // Check if the view name is "logoutSuccess"
+
+        // Assert
+        assertEquals("logoutSuccess", viewName); // Check if the view name is "logoutSuccess"
+        verify(mockSession).invalidate(); // Verify the session is invalidated
+        verify(model).addAttribute("message", "You have been logged out successfully."); // Verify success message
+    }
+
+
     @Test
     public void testAddToCart() {
         lastTestName = "testAddToCart"; // Store test case name
@@ -107,6 +129,8 @@ public class MobileStoreApplicationTests {
         verify(model).addAttribute("message", "Product added to cart"); // Verify that the message is added to the model
         verify(productService).getProductById(productId); // Ensure the service method is called
     }
+
+
 
     @Test
     public void testSignUp() {
