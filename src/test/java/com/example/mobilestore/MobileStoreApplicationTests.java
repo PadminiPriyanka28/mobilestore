@@ -105,7 +105,7 @@ public class MobileStoreApplicationTests {
         // Assert
         assertEquals("logoutSuccess", viewName); // Check if the view name is "logoutSuccess"
         verify(mockSession).invalidate(); // Verify the session is invalidated
-        //verify(model).addAttribute("message", "You have been logged out successfully."); // Verify success message
+        verify(model).addAttribute("message", "You have been logged out successfully."); // Verify success message
     }
 
 
