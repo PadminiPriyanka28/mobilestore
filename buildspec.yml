@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: openjdk17   # Ensure you're using OpenJDK 17
+      java: openjdk17  # Only set Java runtime
     commands:
       - echo "Installing dependencies"
       - yum install -y git   # Install Git
@@ -19,7 +19,7 @@ phases:
     commands:
       - echo "Setting up environment"
       - echo "Maven version:"
-      - mvn -v  # Verify Maven version again before build
+      - mvn -v  # Verify Maven version before build
 
   build:
     commands:
