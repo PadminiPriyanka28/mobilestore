@@ -24,9 +24,9 @@ phases:
       - echo "Setting up environment"
       - echo "Maven version:"
       - mvn -v  # Verify Maven version before build
-    - echo "Downloading PEM file from S3"
-    - aws s3 cp s3://mobilestore-artifacts/app_jar/mobilestore.pem /tmp/mobilestore.pem
-    - chmod 400 /tmp/mobilestore.pem  # Set proper permissions for the PEM file
+      - echo "Downloading PEM file from S3"
+      - aws s3 cp s3://mobilestore-artifacts/app_jar/mobilestore.pem /tmp/mobilestore.pem
+      - chmod 400 /tmp/mobilestore.pem  # Set proper permissions for the PEM file
 
 
   build:
@@ -37,9 +37,9 @@ phases:
 
   post_build:
     commands:
-    - echo "Deploying to EC2"
-    - scp -i /tmp/mobilestore.pem target/mobilestore-0.0.1-SNAPSHOT.jar ec2-user@44.211.74.58:/home/ec2-user/mobilestore-0.0.1-SNAPSHOT.jar
-    - ssh -i /tmp/mobilestore.pem ec2-user@44.211.74.58 'java -jar /home/ec2-user/mobilestore-0.0.1-SNAPSHOT.jar'
+      - echo "Deploying to EC2"
+      - scp -i /tmp/mobilestore.pem target/mobilestore-0.0.1-SNAPSHOT.jar ec2-user@44.211.74.58:/home/ec2-user/mobilestore-0.0.1-SNAPSHOT.jar
+      - ssh -i /tmp/mobilestore.pem ec2-user@44.211.74.58 'java -jar /home/ec2-user/mobilestore-0.0.1-SNAPSHOT.jar'
 
 artifacts:
   files:
