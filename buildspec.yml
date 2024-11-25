@@ -7,28 +7,23 @@ phases:
       - yum install -y git wget
       - echo "Installing OpenJDK 17 from Amazon Corretto"
       - wget -O /tmp/corretto-17.tar.gz https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
-      - mkdir /usr/local/corretto
-      - tar -xzf /tmp/corretto-17.tar.gz -C /usr/local/corretto
-      - export JAVA_HOME=/usr/local/corretto/amazon-corretto-17
+      - mkdir -p /usr/local/corretto
+      - tar -xzf /tmp/corretto-17.tar.gz -C /usr/local/corretto --strip-components=1
+      - ls /usr/local/corretto  # Verify extraction
+      - export JAVA_HOME=/usr/local/corretto
       - export PATH=$JAVA_HOME/bin:$PATH
-      - echo "Verifying Java installation"
-      - ls /usr/local/corretto/amazon-corretto-17
-      - java -version
+      - java -version  # Check if Java is installed
+
       - echo "Installing Maven"
       - wget https://dlcdn.apache.org/maven/maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz
       - tar -xzf apache-maven-3.8.8-bin.tar.gz -C /opt
       - rm -f /usr/bin/mvn
       - ln -s /opt/apache-maven-3.8.8/bin/mvn /usr/bin/mvn
-      - echo "Setting JAVA_HOME and PATH again to ensure consistency"
-      - export JAVA_HOME=/usr/local/corretto/amazon-corretto-17
-      - export PATH=$JAVA_HOME/bin:$PATH
-      - echo "Verifying Maven installation"
-      - mvn -v
+      - mvn -v  # Verify Maven installation
 
   pre_build:
     commands:
       - echo "Setting up environment"
-      - echo "Downloading PEM file from S3"
       - aws s3 cp s3://mobilestore-artifacts/app_jar/mobilestore.pem /tmp/mobilestore.pem
       - chmod 400 /tmp/mobilestore.pem
 
@@ -36,7 +31,6 @@ phases:
     commands:
       - echo "Building the project"
       - mvn clean package
-      - echo "Build successful"
 
   post_build:
     commands:
@@ -44,7 +38,6 @@ phases:
       - mkdir -p ~/.ssh
       - echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
       - scp -i /tmp/mobilestore.pem target/mobilestore-0.0.1-SNAPSHOT.jar ec2-user@44.211.74.58:/home/ec2-user/mobilestore-0.0.1-SNAPSHOT.jar
-      - echo "Running JAR on EC2"
       - ssh -i /tmp/mobilestore.pem ec2-user@44.211.74.58 'java -jar /home/ec2-user/mobilestore-0.0.1-SNAPSHOT.jar'
 
 artifacts:
