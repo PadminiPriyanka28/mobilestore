@@ -20,6 +20,8 @@ phases:
       - rm -f /usr/bin/mvn
       - ln -s /opt/apache-maven-3.8.8/bin/mvn /usr/bin/mvn
       - echo "Maven version:"
+      - export JAVA_HOME=/usr/local/corretto/amazon-corretto-17
+      - export PATH=$JAVA_HOME/bin:$PATH
       - mvn -v
 
   pre_build:
