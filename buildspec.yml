@@ -11,7 +11,8 @@ phases:
       - yum install -y amazon-corretto-17-x64-linux-jdk.rpm   # Install OpenJDK 17 from RPM
       - echo "Java version:"
       - java -version  # Check Java version
-      - wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz  # Download Maven
+      - echo "Downloading Maven..."
+      - wget https://downloads.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz  # Corrected Maven download link
       - tar xzf apache-maven-3.8.6-bin.tar.gz -C /opt   # Extract Maven to /opt
       - ln -s /opt/apache-maven-3.8.6 /opt/maven   # Create symlink for easier access
       - export PATH=/opt/maven/bin:$PATH   # Add Maven to PATH
