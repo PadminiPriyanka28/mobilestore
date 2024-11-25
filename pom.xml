@@ -96,6 +96,20 @@
                     <target>21</target>
                 </configuration>
             </plugin>
+         <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>repackage</goal>
+                </goals>
+                <configuration>
+                    <mainClass>com.example.mobilestore.Application</mainClass>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
             <!-- Plugin to enable JaCoCo code coverage -->
 <!--            <plugin>-->
 <!--                <groupId>org.jacoco</groupId>-->
