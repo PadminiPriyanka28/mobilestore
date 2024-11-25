@@ -3,36 +3,27 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: openjdk-17
+      java: openjdk17
+      maven: 3.x
     commands:
-      # Install Maven if it's not available
-      echo Installing Maven...
-      curl -sSL https://archive.apache.org/dist/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.tar.gz | tar -xz -C /usr/local
-      export PATH=$PATH:/usr/local/apache-maven-3.8.4/bin
-      # Verify the installation
-     
-      export PATH=$PATH:/usr/local/bin
-      echo "Git version:"
-      git --version
-      echo "Maven version:"
-      mvn -v
-      
-
+      - echo "Installing dependencies"
+      - yum install -y git
+      - echo "Git version:"
+      - git --version
   pre_build:
     commands:
-      # Setup your environment if needed
-      echo Setting up environment variables...
-
+      - echo "Setting up environment"
+      - echo "Maven version:"
+      - mvn -v
   build:
     commands:
-      # Build the Spring Boot application and package it as a .jar file
-      echo Building the Spring Boot application...
-      mvn clean package
-
+      - echo "Building the project"
+      - mvn clean package  # This is where the build happens
   post_build:
     commands:
-      # Deploy the application to a specific environment (if applicable)
-      echo Build completed successfully
+      - echo "Build complete"
+      - ls -l target/
+
 
 artifacts:
   files:
