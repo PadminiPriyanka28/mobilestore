@@ -33,9 +33,13 @@ phases:
 
   post_build:
     commands:
-      - echo "Build complete"
-      - ls -l target/   # List the files in the target directory to check the output
-
+      - echo "Deploying to EC2"
+      - aws s3 cp target/mobilestore-0.0.1-SNAPSHOT.jar s3://mobilestore-artifacts/mobilestore-0.0.1-SNAPSHOT.jar  # Optionally, upload to S3 if needed
+      - echo "Copying jar to EC2 instance"
+      - scp -i s3://mobilestore-artifacts/app_jar/mobilestore.pem target/mobilestore-0.0.1-SNAPSHOT.jar ec2-user@44.211.74.58:/home/ec2-user/mobilestore-0.0.1-SNAPSHOT.jar
+      - ssh -i s3://mobilestore-artifacts/app_jar/mobilestore.pem ec2-user@44.211.74.58 'java -jar /home/ec2-user/your-app.jar'  # Run the application on EC2
+      
 artifacts:
   files:
-    - target/*.jar   # Include JAR files in the artifacts
+    - target/*.jar
+
