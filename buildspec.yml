@@ -10,16 +10,19 @@ phases:
       - yum install -y git
       - echo "Git version:"
       - git --version
+
   pre_build:
     commands:
       - echo "Setting up environment"
       - echo "Maven version:"
       - mvn -v
+
   build:
     commands:
       - echo "Building the project"
-      - echo "Running mvn clean package"
-      - mvn clean package
+      - mvn clean package  # Your actual build command
+      - echo "Build successful"  # Success message
+
   post_build:
     commands:
       - echo "Build complete"
