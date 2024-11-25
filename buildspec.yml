@@ -4,24 +4,25 @@ phases:
   install:
     commands:
       - echo "Installing dependencies"
-      - yum install -y git
+      - yum install -y git wget
       - echo "Installing OpenJDK 17 from Amazon Corretto"
       - wget -O /tmp/corretto-17.tar.gz https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
       - mkdir /usr/local/corretto
       - tar -xzf /tmp/corretto-17.tar.gz -C /usr/local/corretto
       - export JAVA_HOME=/usr/local/corretto/amazon-corretto-17
       - export PATH=$JAVA_HOME/bin:$PATH
-      - echo "Java version:"
+      - echo "Verifying Java installation"
+      - ls /usr/local/corretto/amazon-corretto-17
       - java -version
       - echo "Installing Maven"
       - wget https://dlcdn.apache.org/maven/maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz
       - tar -xzf apache-maven-3.8.8-bin.tar.gz -C /opt
-      - echo "Removing existing mvn symbolic link if present"
       - rm -f /usr/bin/mvn
       - ln -s /opt/apache-maven-3.8.8/bin/mvn /usr/bin/mvn
-      - echo "Maven version:"
+      - echo "Setting JAVA_HOME and PATH again to ensure consistency"
       - export JAVA_HOME=/usr/local/corretto/amazon-corretto-17
       - export PATH=$JAVA_HOME/bin:$PATH
+      - echo "Verifying Maven installation"
       - mvn -v
 
   pre_build:
