@@ -30,5 +30,9 @@ phases:
 
 artifacts:
   files:
-    - target/*.jar
+    - target/*.jar  # Output the jar file for further use (e.g., deployment)
   discard-paths: yes
+  # Specify the S3 bucket and folder where the artifact should be uploaded
+  base-directory: target  # Artifact directory in the build container
+  name: mobilestore-0.0.1-SNAPSHOT.jar  # Optional: Name of the artifact file
+  location: mobilestore-artifacts  # S3 Bucket name (Replace with your actual bucket name)
