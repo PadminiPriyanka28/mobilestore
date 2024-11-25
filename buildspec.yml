@@ -18,18 +18,12 @@ phases:
   build:
     commands:
       - echo "Building the project"
-      - mvn clean package  # This is where the build happens
+      - mvn clean package  # Replace the incorrect 'success' command with your build command
   post_build:
     commands:
       - echo "Build complete"
       - ls -l target/
 
-
 artifacts:
   files:
-    - target/*.jar  # Output the jar file for further use (e.g., deployment)
-  discard-paths: yes
-  # Specify the S3 bucket and folder where the artifact should be uploaded
-  base-directory: target  # Artifact directory in the build container
-  name: mobilestore-0.0.1-SNAPSHOT.jar  # Optional: Name of the artifact file
-  location: mobilestore-artifacts  # S3 Bucket name (Replace with your actual bucket name)
+    - target/*.jar
