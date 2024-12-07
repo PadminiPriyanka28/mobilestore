@@ -37,7 +37,7 @@ phases:
       - echo "Disabling strict host key checking"
       - mkdir -p ~/.ssh
       - echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-      - scp -i /tmp/mobilestore.pem target/mobilestore-0.0.1-SNAPSHOT.jar ec2-user@44.203.136.247:/home/ec2-user/mobilestore-0.0.1-SNAPSHOT.jar
+      - scp -i /tmp/mobilestore.pem target/mobilestore-0.0.1-SNAPSHOT.jar ec2-user@3.93.172.114:/home/ec2-user/mobilestore-0.0.1-SNAPSHOT.jar
       - echo "Starting the application in the background on EC2"
       - ssh -i /tmp/mobilestore.pem ec2-user@44.211.74.58 'sudo nohup java -jar /home/ec2-user/mobilestore-0.0.1-SNAPSHOT.jar > /home/ec2-user/mobilestore.log 2>&1 &'
 
