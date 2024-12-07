@@ -33,6 +33,7 @@
     .navbar .nav-links {
       display: flex;
       gap: 20px;
+      align-items: center;
     }
 
     .navbar .nav-links a {
@@ -41,23 +42,54 @@
       font-size: 16px;
     }
 
+    .navbar .user-logo {
+      color: white;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .navbar .user-logo img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .navbar .user-logo:hover .dropdown {
+      display: block;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      right: 20px;
+      background-color: #fff;
+      color: #333;
+      border-radius: 5px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      width: 150px;
+      z-index: 10;
+    }
+
+    .dropdown a {
+      text-decoration: none;
+      color: #333;
+      padding: 10px;
+      display: block;
+      cursor: pointer;
+    }
+
+    .dropdown a:hover {
+      background-color: #ddd;
+    }
+
     .navbar .cart {
       color: white;
       font-size: 20px;
-    }
-
-    /* Search Bar Styles */
-    .search-bar {
-      margin: 20px;
-      text-align: center;
-    }
-
-    .search-bar input {
-      padding: 10px;
-      width: 60%;
-      border: none;
-      border-radius: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
     }
 
     /* Product Carousel */
@@ -114,7 +146,43 @@
       background-color: #e65c00;
     }
 
-    /* Footer Styles */
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 50%;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close {
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      margin-top: 20px;
+    }
+
     footer {
       background-color: #0a1d32;
       color: white;
@@ -128,6 +196,79 @@
       text-decoration: none;
       margin: 0 10px;
     }
+
+    /* Cart Modal */
+    #cartModal .modal-content {
+      width: 400px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item p {
+      margin: 0;
+    }
+
+    .remove-btn {
+      background-color: #ff6f00;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .remove-btn:hover {
+      background-color: #e65c00;
+    }
+
+    .buy-now-btn {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      font-size: 18px;
+    }
+
+    .buy-now-btn:hover {
+      background-color: #218838;
+    }
+
+    /* Checkout Modal */
+    #checkoutModal .modal-content {
+      width: 400px;
+    }
+
+    .checkout-form input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .checkout-form button {
+      background-color: #ff6f00;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      width: 100%;
+      font-size: 18px;
+    }
+
+    .checkout-form button:hover {
+      background-color: #e65c00;
+    }
+
   </style>
 </head>
 <body>
@@ -136,20 +277,18 @@
 <div class="navbar">
   <div class="logo">PhoneShop</div>
   <div class="nav-links">
-    <a href="/login">Logout</a>
-    <a href="/signup">Sign Up</a>
-    <div class="cart">
-      <i class="fas fa-shopping-cart"></i> Cart (0)
+    <div class="user-logo" onclick="toggleDropdown()">
+      <img src="https://via.placeholder.com/30" alt="User Logo">
+      <span>John Doe</span>
+      <div class="dropdown" id="userDropdown">
+        <a href="javascript:void(0);" onclick="logout()">Logout</a>
+      </div>
+    </div>
+    <div class="cart" onclick="showCartModal()">
+      <i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)
     </div>
   </div>
 </div>
-
-<!-- Search Bar -->
-<form action="/search" method="get">
-  <input type="text" name="keyword" placeholder="Search for products..." />
-  <button type="submit">Search</button>
-</form>
-
 
 <!-- Product Carousel -->
 <div class="carousel">
@@ -157,37 +296,66 @@
     <img src="https://via.placeholder.com/250x300" alt="Phone 1">
     <h3>iPhone 13 Pro</h3>
     <p>$999</p>
-    <button class="add-to-cart-btn" onclick="addToCart(1)">Add to Cart</button>
+    <button class="add-to-cart-btn" onclick="addToCart(1, 'iPhone 13 Pro', 999)">Add to Cart</button>
   </div>
   <div class="product-card">
     <img src="https://via.placeholder.com/250x300" alt="Phone 2">
     <h3>Samsung Galaxy S21</h3>
     <p>$799</p>
-    <button class="add-to-cart-btn" onclick="addToCart(2)">Add to Cart</button>
+    <button class="add-to-cart-btn" onclick="addToCart(2, 'Samsung Galaxy S21', 799)">Add to Cart</button>
   </div>
   <div class="product-card">
     <img src="https://via.placeholder.com/250x300" alt="Phone 3">
     <h3>Google Pixel 6</h3>
     <p>$699</p>
-    <button class="add-to-cart-btn" onclick="addToCart(3)">Add to Cart</button>
+    <button class="add-to-cart-btn" onclick="addToCart(3, 'Google Pixel 6', 699)">Add to Cart</button>
   </div>
   <div class="product-card">
     <img src="https://via.placeholder.com/250x300" alt="Phone 4">
-    <h3>OnePlus 9 Pro</h3>
+    <h3>OnePlus 9</h3>
     <p>$749</p>
-    <button class="add-to-cart-btn" onclick="addToCart(4)">Add to Cart</button>
+    <button class="add-to-cart-btn" onclick="addToCart(4, 'OnePlus 9', 749)">Add to Cart</button>
   </div>
   <div class="product-card">
     <img src="https://via.placeholder.com/250x300" alt="Phone 5">
     <h3>Huawei P40 Pro</h3>
     <p>$899</p>
-    <button class="add-to-cart-btn" onclick="addToCart(5)">Add to Cart</button>
+    <button class="add-to-cart-btn" onclick="addToCart(5, 'Huawei P40 Pro', 899)">Add to Cart</button>
   </div>
-  <div class="product-card">
-    <img src="https://via.placeholder.com/250x300" alt="Phone 6">
-    <h3>Xiaomi Mi 11</h3>
-    <p>$749</p>
-    <button class="add-to-cart-btn" th:action="@{/add-to-cart}">Add to Cart</button>
+</div>
+
+<!-- Cart Modal -->
+<div id="cartModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Shopping Cart</h2>
+      <span class="close" onclick="closeCartModal()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div id="cartItemsList">
+        <!-- Cart items will be dynamically added here -->
+      </div>
+      <button class="buy-now-btn" onclick="showCheckoutModal()">Buy Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Checkout Modal -->
+<div id="checkoutModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Checkout</h2>
+      <span class="close" onclick="closeCheckoutModal()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <form class="checkout-form" onsubmit="processCheckout(event)">
+        <input type="text" placeholder="Cardholder Name" required />
+        <input type="text" placeholder="Card Number" required />
+        <input type="text" placeholder="Expiration Date (MM/YY)" required />
+        <input type="text" placeholder="CVV" required />
+        <button type="submit">Complete Purchase</button>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -200,24 +368,88 @@
   </p>
 </footer>
 
-<!-- Link to Spring Boot Backend -->
+<!-- JavaScript for Modal, Cart, Checkout, and Logout -->
 <script>
-  function addToCart(productId) {
-    // JavaScript to handle Add to Cart logic with Spring Boot backend
-    fetch(`/add-to-cart/${productId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ productId: productId })
-    })
-            .then(response => response.json())
-            .then(data => {
-              alert(data.message); // Display message returned from backend
-              // Update cart count or UI if needed
-            })
-            .catch(error => console.error('Error:', error));
+  let cartCount = 0;
+  let cartItems = [];
+
+  // Add to Cart function
+  function addToCart(id, name, price) {
+    const item = { id, name, price };
+    cartItems.push(item);
+    cartCount++;
+    updateCartCount();
+    alert(`${name} added to cart!`);
+  }
+
+  // Update cart count in the navbar
+  function updateCartCount() {
+    document.getElementById('cartCount').innerText = cartCount;
+  }
+
+  // Show Cart Modal
+  function showCartModal() {
+    const cartItemsList = document.getElementById('cartItemsList');
+    cartItemsList.innerHTML = '';
+
+    cartItems.forEach((item, index) => {
+      const cartItem = document.createElement('div');
+      cartItem.classList.add('cart-item');
+      cartItem.innerHTML = `
+        <p>${item.name} - $${item.price}</p>
+        <button class="remove-btn" onclick="removeFromCart(${index})">Remove</button>
+      `;
+      cartItemsList.appendChild(cartItem);
+    });
+
+    document.getElementById('cartModal').style.display = 'block';
+  }
+
+  // Close Cart Modal
+  function closeCartModal() {
+    document.getElementById('cartModal').style.display = 'none';
+  }
+
+  // Remove item from Cart
+  function removeFromCart(index) {
+    cartItems.splice(index, 1);
+    cartCount--;
+    updateCartCount();
+    showCartModal();
+  }
+
+  // Show Checkout Modal
+  function showCheckoutModal() {
+    document.getElementById('checkoutModal').style.display = 'block';
+  }
+
+  // Close Checkout Modal
+  function closeCheckoutModal() {
+    document.getElementById('checkoutModal').style.display = 'none';
+  }
+
+  // Process Checkout
+  function processCheckout(event) {
+    event.preventDefault();
+    alert('Purchase Completed! Thank you for shopping with us.');
+    cartItems = [];
+    cartCount = 0;
+    updateCartCount();
+    closeCheckoutModal();
+    closeCartModal();
+  }
+
+  // Toggle Dropdown Menu
+  function toggleDropdown() {
+    document.getElementById('userDropdown').classList.toggle('show');
+  }
+
+  // Logout function
+  function logout() {
+    alert('You have been logged out.');
+    // Here you can add actual logout functionality (e.g., clearing session, redirecting to login page)
   }
 </script>
+
 </body>
 </html>
