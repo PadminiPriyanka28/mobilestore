@@ -98,6 +98,16 @@ The application uses an in-memory H2 database by default, so there’s no need t
 - Integrate with a real database for production use.
 - Add more sophisticated cart management (e.g., quantities, product removal).
   
+## Screenshots
+
+![image](https://github.com/user-attachments/assets/20bcb5bd-a6ce-4cc6-84a8-cc0d00f91fc2)
+![image](https://github.com/user-attachments/assets/d73c964f-caff-45bc-8df2-cf0e3f1ded75)
+![image](https://github.com/user-attachments/assets/78770ccc-6f65-4884-965d-770c46e3d6b5)
+![image](https://github.com/user-attachments/assets/d4f1aadc-ef23-4b91-9422-83c4202ca47d)
+![image](https://github.com/user-attachments/assets/120ae56d-85ad-499a-a122-8f8571557b53)
+![image](https://github.com/user-attachments/assets/0d62d695-cb16-4de6-8769-473cf437f1a7)
+![image](https://github.com/user-attachments/assets/c17b08b7-9339-4a14-9728-4989860a30d7)
+![image](https://github.com/user-attachments/assets/2b7be386-f658-4386-8f2c-dd23b1fb91f3)
 
 
 ## Acknowledgments
@@ -106,4 +116,3 @@ The application uses an in-memory H2 database by default, so there’s no need t
 - H2 Database for the in-memory database used during development.
 - JavaScript and CSS libraries used for the frontend design and interactivity.
 
-```
